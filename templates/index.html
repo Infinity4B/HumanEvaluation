@@ -14,14 +14,14 @@
     <div class="mainContents flex flex-row">
       <div class="indexes bg-slate-300 w-1/8">
         <div class="indexGrid grid grid-cols-3 gap-4 p-4">
-          {% for i in range(totalNum) %}
-          <div class="bg-red-400 rounded-lg w-12 h-12 flex justify-center items-center">{{i+1}}</div>
+          {% for i in range((page-1)*36,page*36) %}
+          <a href="/{{i+1+(page-1)*36}}?page={{page}}" class="bg-red-400 rounded-lg w-12 h-12 flex justify-center items-center">{{i+1+(page-1)*36}}</a>
           {% endfor %}
         </div>
       </div>
       <div class="evalView h-screen bg-gray-500 flex flex-auto flex-col items-center justify-center">
         <div class="contentView flex flex-col items-center justify-center">
-          <div class="num"><p class="n text-3xl text-white font-black">{{num}}</p></div>
+          <div class="num"><p class="n text-3xl text-white font-black">{{num}} {{page}}</p></div>
           <div class="pictures">
             <img class="pictures w-90 h-80" src= {{ file }}>
           </div>
