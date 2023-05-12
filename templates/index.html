@@ -3,67 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Human Evaluation </title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <div class="all h-screen flex-col">
-  <div class="header bg-indigo-400 h-16 flex justify-center items-center">
-    <p class="text text-white text-4xl font-black tracking-widest">Human Evaluation</p>
-  </div>
-  <div>
-    <div class="mainContents flex flex-row">
-      <div class="indexes bg-slate-300 w-1/8">
-        <div class="indexGrid grid grid-cols-3 gap-4 p-4">
-          {% for i in range((page-1)*36,page*36) %}
-          <a href="/{{i+1+(page-1)*36}}?page={{page}}" class="bg-red-400 rounded-lg w-12 h-12 flex justify-center items-center">{{i+1+(page-1)*36}}</a>
-          {% endfor %}
-        </div>
-      </div>
-      <div class="evalView h-screen bg-gray-500 flex flex-auto flex-col items-center justify-center">
-        <div class="contentView flex flex-col items-center justify-center">
-          <div class="num"><p class="n text-3xl text-white font-black">{{num}} {{page}}</p></div>
-          <div class="pictures">
-            <img class="pictures w-90 h-80" src= {{ file }}>
-          </div>
-          <div class="texts bg-white h-50">
-            <p class="textContent h-50">
-              Web应用程序通常需要静态文件，例如javascript文件或支持网页显示的CSS文件。<br>
-              通常，配置Web服务器并为您提供这些服务，但在开发过程中，这些文件是从您的包或模块旁边的static文件夹中提供，它将在应用程序的/static中提供。<br>
-              特殊端点'static'用于生成静态文件的URL。<br>
-              在下面的示例中，在index.html中的HTML按钮的OnClick事件上调用hello.js中定义的javascript函数，该函数在Flask应用程序的“/”URL上呈现。<br>
-            </p>
-          </div>
-        </div>
-        <div class="rateView">
-          <div class="score flex flex-row">
-            <p class="flex justify-center items-center"> Category1 </p>
-            <div class="indexGrid grid grid-cols-4 gap-4 p-1">
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">1</div>
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">2</div>
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">3</div>
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">4</div>
-            </div>
-          </div>
-          <div class="score flex flex-row">
-            <p class="flex justify-center items-center"> Category2 </p>
-            <div class="indexGrid grid grid-cols-4 gap-4 p-1">
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">1</div>
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">2</div>
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">3</div>
-              <div class="bg-blue-400 rounded-lg w-12 h-12 flex justify-center items-center">4</div>
-            </div>
-          </div>
-        </div>
-        <div class="choiceView">
-          <div class="indexGrid grid grid-cols-3 gap-4 p-4">
-            <div class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Prev</div>
-            <div class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">g</div>
-            <div class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</div>
-          </div>
-        </div>
-      </div>
+    <div class="header bg-blue-600 h-16 flex justify-center items-center">
+        <p class="text-3xl text-white">Main</p>
     </div>
-  </div>
-  </div>
+    <div class="flex flex-auto flex-grow">
+        <div class="w-1/4"></div>
+        <div class="w-1/2">
+        <div class="selections grid grid-cols-3 gap-4 p-4 items-center justify-center">
+            {% for specTask in tasks.keys() %}
+            <a href="/{{specTask}}" class="item bg-green-300 rounded-3xl flex flex-col text-center justify-center items-center">
+                <p class="text-gray-700 font-bold">{{specTask}}</p>
+                <p class="text-gray-700 font-bold">{{tasks[specTask]['author']}}</p>
+            </a>
+            {% endfor %}
+        </div></div>
+        <div class="w-1/4"></div>
+    
 </body>
 </html>

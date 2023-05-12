@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> {{task}} </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div class="all h-screen flex-col">
+  <div class="header bg-indigo-400 h-16 flex justify-center items-center">
+    <a href="/" class="text text-white text-4xl font-black tracking-widest">Human Evaluation</a>
+  </div>
+  <div>
+    <div class="mainContents flex flex-row flex-auto">
+      <div class="indexes bg-slate-300 w-16 flex flex-grow">
+        <div>
+          <div class="indexGrid grid grid-cols-3 gap-4 p-4">
+            {% for i in range((page-1)*36,loopMax) %}
+            <a href="/{{task}}/{{i+1}}?page={{page}}" class="bg-red-400 rounded-lg w-12 h-12 flex justify-center items-center">{{i+1}}</a>
+            {% endfor %}
+          </div>
+          <div class="indexGrid grid grid-cols-3 gap-4 p-4">
+            {% if page > 1%}
+            <a href="/{{task}}/{{num}}?page={{page-1}}" class="bg-red-400 rounded-lg w-12 h-8 flex justify-center items-center">Prev</a>
+            {% else %}
+            <div class="bg-gray-500 rounded-lg w-12 h-8 flex justify-center items-center">Prev</div>
+            {% endif %}
+            <form>
+              <input class="rounded-lg w-12 h-8 flex justify-center items-center text-center" type="text" name="page" value="{{page}}" placeholder="{{page}}">
+            </form>
+            {% if page <= pageMax%}
+            <a href="/{{task}}/{{num}}?page={{page+1}}" class="bg-red-400 rounded-lg w-12 h-8 flex justify-center items-center">Next</a>
+            {% else %}
+            <div class="bg-gray-500 rounded-lg w-12 h-8 flex justify-center items-center">Next</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="evalView h-screen w-4/5 bg-gray-500 flex flex-auto flex-col items-center justify-center">
+        <div class="contentView flex flex-col items-center justify-center">
+          <div class="num"><p class="n text-3xl text-white font-black">{{num}}/{{totalNum}}</p></div>
+          <div class="pictures">
+            <img class="pictures w-90 h-80" src= {{ data[(num-1)|string()]['path'] }}>
+          </div>
+          <div class="texts bg-white h-50 w-5/6 p-2 rounded-lg">
+            {% for key in data[(num-1)|string()].keys()%}
+            {% if key != 'path' %}
+            <span class="text-red-600 font-bold">{{key}}:</span>
+            <p class="text-black">{{data[(num-1)|string()][key]}}</p>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="rateView">
+          {% for item in criterion %}
+          {% for key in item.keys() %}
+          <div class="score flex flex-row">
+            <p class="flex justify-center items-center"> {{key}}: </p>
+            <div class="indexGrid grid grid-cols-4 gap-4 p-1">
+              {% for i in range(item[key]) %}
+              <label for="{{i}}">
+                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required>
+                <div class="bg-blue-400 rounded-lg w-8 h-8 flex justify-center items-center cursor-pointer peer-checked:border-black peer-checked:text-yellow-300 hover:text-gray-600 hover:bg-gray-100">
+                  {{i}}
+                </div>
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+          {% endfor %}
+        </div>
+        <div class="choiceView">
+          <div class="indexGrid grid grid-cols-3 gap-4 p-4">
+            {% if num == 1 %}
+            <div class="bg-grey-400 rounded-lg w-20 h-8 flex justify-center items-center">Prev</div>
+            {% else %}
+            <a href="/{{task}}/{{num-1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Prev</a>
+            {% endif %}
+            <form method="post" action="/{{task}}/jump">
+              <input class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center text-center type="text" name="num" value="{{num}}" placeholder="{{num}}">
+            </form>
+            {% if num == totalNum %}
+            <div class="bg-grey-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</div>
+            {% else %}
+            <form method="post" action="/{{task}}/submit">
+              <input type="submit" method="post" href="/{{task}}/{{num+1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</a>
+            </form>
+
+            <!-- <a href="/{{task}}/{{num+1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</a> -->
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+</html>
