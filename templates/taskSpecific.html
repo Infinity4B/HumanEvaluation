@@ -84,11 +84,7 @@
             {% if num == totalNum %}
             <div class="bg-grey-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</div>
             {% else %}
-            <form method="post" action="/{{task}}/submit">
-              <input type="submit" method="post" href="/{{task}}/{{num+1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</a>
-            </form>
-
-            <!-- <a href="/{{task}}/{{num+1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</a> -->
+            <a href="/{{task}}/{{num+1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</a>
             {% endif %}
           </div>
         </div>
