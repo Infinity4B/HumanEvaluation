@@ -52,7 +52,7 @@
             {% endfor %}
           </div>
         </div>
-        <div class="rateView">
+        <form class="rateView flex flex-col justify-center items-center" action="/{{task}}/{{num}}/submit" method="post">
           {% for item in criterion %}
           {% for key in item.keys() %}
           <div class="score flex flex-row">
@@ -70,7 +70,8 @@
           </div>
           {% endfor %}
           {% endfor %}
-        </div>
+          <input type="submit" name='rateView' value="Submit" class="bg-green-400 px-4 rounded-lg h-8 cursor-pointer flex justify-center items-center">
+        </form>
         <div class="choiceView">
           <div class="indexGrid grid grid-cols-3 gap-4 p-4">
             {% if num == 1 %}

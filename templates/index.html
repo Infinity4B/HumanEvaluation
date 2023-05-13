@@ -10,18 +10,14 @@
     <div class="header bg-blue-600 h-16 flex justify-center items-center">
         <p class="text-3xl text-white">Main</p>
     </div>
-    <div class="flex flex-auto flex-grow">
-        <div class="w-1/4"></div>
-        <div class="w-1/2">
+    <div class="px-4 flex flex-auto flex-grow items-center justify-center">
         <div class="selections grid grid-cols-3 gap-4 p-4 items-center justify-center">
             {% for specTask in tasks.keys() %}
-            <a href="/{{specTask}}" class="item bg-green-300 rounded-3xl flex flex-col text-center justify-center items-center">
+            <a href="/{{specTask}}" class="item bg-green-300 rounded-3xl w-fit px-6 py-2 flex flex-col text-center justify-center items-center">
                 <p class="text-gray-700 font-bold">{{specTask}}</p>
                 <p class="text-gray-700 font-bold">{{tasks[specTask]['author']}}</p>
             </a>
             {% endfor %}
-        </div></div>
-        <div class="w-1/4"></div>
-    
+        </div>
 </body>
 </html>
