@@ -1,8 +1,10 @@
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, redirect, url_for, request, render_template, send_from_directory
 import yaml, json, os
 
 
 app = Flask(__name__, root_path=os.getcwd(),static_folder=os.path.join(os.getcwd(),'static'))
+with open('config.yml','r') as f:
+   globalConfig = yaml.load(f, yaml.FullLoader)
 
 @app.route('/')
 def mainpage():
@@ -55,6 +57,4 @@ def rating_n(task, num):
    return render_template('./taskSpecific.html',num=int(num),totalNum=totalNum,page=page,pageMax=pageMax,loopMax=loopMax,task=task,data=data,criterion=taskConfig['criterion'])
 
 if __name__ == '__main__':
-   with open('config.yml','r') as f:
-      globalConfig = yaml.load(f, yaml.FullLoader)
-      app.run(debug=True)
+   app.run(debug=True)
