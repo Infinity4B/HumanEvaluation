@@ -61,7 +61,11 @@
             <div class="indexGrid grid grid-cols-4 gap-4 p-1">
               {% for i in range(item[key]) %}
               <label for="{{i}}">
-                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden">
+                {% if resDict[key] == i|string() %}
+                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required checked>
+                {% else %}
+                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required>
+                {% endif %}
                 <div class="bg-blue-400 rounded-lg w-8 h-8 flex justify-center items-center cursor-pointer peer-checked:border-black peer-checked:text-yellow-300 hover:text-gray-600 hover:bg-gray-100">
                   {{i}}
                 </div>
@@ -74,7 +78,7 @@
           {% if num == totalNum %}
           <button class="bg-gray-400 px-4 rounded-lg h-8 cursor-not-allowed">Submit</button>
           {% else %}
-          <input type="submit" name='rateView' value="Submit" class="bg-green-400 px-4 rounded-lg h-8 cursor-pointer flex justify-center items-center">
+          <input type="submit" value="Submit" class="bg-green-400 px-4 rounded-lg h-8 cursor-pointer flex justify-center items-center">
           {% endif %}
         </form>
         <div class="choiceView">
