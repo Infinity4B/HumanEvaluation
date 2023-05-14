@@ -25,7 +25,7 @@
             {% if page > 1%}
             <a href="/{{task}}/{{num}}?page={{page-1}}" class="bg-red-400 rounded-lg w-12 h-8 flex justify-center items-center">Prev</a>
             {% else %}
-            <div class="bg-gray-500 rounded-lg w-12 h-8 flex justify-center items-center">Prev</div>
+            <div class="bg-gray-500 cursor-not-allowed rounded-lg w-12 h-8 flex justify-center items-center">Prev</div>
             {% endif %}
             <form>
               <input class="rounded-lg w-12 h-8 flex justify-center items-center text-center" type="text" name="page" value="{{page}}" placeholder="{{page}}">
@@ -33,7 +33,7 @@
             {% if page <= pageMax%}
             <a href="/{{task}}/{{num}}?page={{page+1}}" class="bg-red-400 rounded-lg w-12 h-8 flex justify-center items-center">Next</a>
             {% else %}
-            <div class="bg-gray-500 rounded-lg w-12 h-8 flex justify-center items-center">Next</div>
+            <div class="bg-gray-500 cursor-not-allowed rounded-lg w-12 h-8 flex justify-center items-center">Next</div>
             {% endif %}
           </div>
         </div>
@@ -53,7 +53,7 @@
             {% endfor %}
           </div>
         </div>
-        <form class="rateView flex flex-col justify-center items-center" action="/{{task}}/{{num}}/submit" method="post">
+        <form class="rateView flex flex-col justify-center items-center" method="post" action="/{{task}}/{{num}}/submit">
           {% for item in criterion %}
           {% for key in item.keys() %}
           <div class="score flex flex-row">
@@ -61,7 +61,7 @@
             <div class="indexGrid grid grid-cols-4 gap-4 p-1">
               {% for i in range(item[key]) %}
               <label for="{{i}}">
-                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required>
+                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden">
                 <div class="bg-blue-400 rounded-lg w-8 h-8 flex justify-center items-center cursor-pointer peer-checked:border-black peer-checked:text-yellow-300 hover:text-gray-600 hover:bg-gray-100">
                   {{i}}
                 </div>
@@ -71,12 +71,16 @@
           </div>
           {% endfor %}
           {% endfor %}
+          {% if num == totalNum %}
+          <button class="bg-gray-400 px-4 rounded-lg h-8 cursor-not-allowed">Submit</button>
+          {% else %}
           <input type="submit" name='rateView' value="Submit" class="bg-green-400 px-4 rounded-lg h-8 cursor-pointer flex justify-center items-center">
+          {% endif %}
         </form>
         <div class="choiceView">
           <div class="indexGrid grid grid-cols-3 gap-4 p-4">
             {% if num == 1 %}
-            <div class="bg-grey-400 rounded-lg w-20 h-8 flex justify-center items-center">Prev</div>
+            <div class="bg-gray-400 cursor-not-allowed rounded-lg w-20 h-8 flex justify-center items-center">Prev</div>
             {% else %}
             <a href="/{{task}}/{{num-1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Prev</a>
             {% endif %}
@@ -84,7 +88,7 @@
               <input class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center text-center type="text" name="num" value="{{num}}" placeholder="{{num}}">
             </form>
             {% if num == totalNum %}
-            <div class="bg-grey-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</div>
+            <div class="bg-gray-400 cursor-not-allowed rounded-lg w-20 h-8 flex justify-center items-center">Next</div>
             {% else %}
             <a href="/{{task}}/{{num+1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</a>
             {% endif %}

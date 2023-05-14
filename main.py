@@ -1,6 +1,11 @@
 from flask import Flask, redirect, url_for, request, render_template, send_from_directory
 import yaml, json, os
 
+def submitResult(num):
+   pass
+
+def readResult(num):
+   pass
 
 app = Flask(__name__, root_path=os.getcwd(),static_folder=os.path.join(os.getcwd(),'static'))
 with open('config.yml','r') as f:
@@ -18,16 +23,15 @@ def rating(task):
 @app.route('/<task>/<num>/submit',methods=['POST'])
 def submit(task,num):
    totalNum = globalConfig['tasks'][task]['totalNum']
-   print('a')
    if int(num) > totalNum:
       return redirect(f'/{task}/{totalNum}')
    else:
-      return redirect(f'/{task}/{num+1}')
+      print(type(num))
+      return redirect(f'/{task}/{str(int(num)+1)}')
 
 @app.route('/<task>/jump',methods=['POST'])
 def direct(task):
    taskConfig = globalConfig['tasks'][task]
-   print(taskConfig)
    totalNum = taskConfig['totalNum']
    if request.method == 'POST':
       num = request.form['num']
