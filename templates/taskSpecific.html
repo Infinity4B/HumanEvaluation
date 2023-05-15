@@ -1,108 +1,128 @@
 <!doctype html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> {{task}} </title>
-  <link rel="shortcut icon" href="{{ url_for('static', filename='icon.svg') }}">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css"  rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> {{task}} </title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icon.svg') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 </head>
+
 <body>
-  <div class="all h-screen flex-col">
-  <nav class="header bg-indigo-400 h-16 flex justify-center items-center">
-    <a href="/" class="text text-white text-4xl font-black tracking-widest">Human Evaluation</a>
-  </nav>
-  <div>
+    <nav class="bg-white dark:bg-gray-900 w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
+        <div class="ml-12 flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="/" class="flex items-center">
+            <img src="{{ url_for('static', filename='icon.svg') }}"" class="h-8 mr-3" alt="Logo">
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">HumanEval</span>
+        </a>
+        </div>
+    </nav>
     <div class="mainContents flex flex-row flex-auto">
-      <div class="indexes bg-slate-300 w-16 flex flex-grow">
-        <div>
-          <div class="indexGrid grid grid-cols-3 gap-4 p-4">
-            {% for i in range((page-1)*36,loopMax) %}
-            <a href="/{{task}}/{{i+1}}?page={{page}}" class="bg-red-400 rounded-lg w-12 h-12 flex justify-center items-center">{{i+1}}</a>
-            {% endfor %}
-          </div>
-          <div class="indexGrid grid grid-cols-3 gap-4 p-4">
-            {% if page > 1%}
-            <a href="/{{task}}/{{num}}?page={{page-1}}" class="bg-red-400 rounded-lg w-12 h-8 flex justify-center items-center">Prev</a>
-            {% else %}
-            <div class="bg-gray-500 cursor-not-allowed rounded-lg w-12 h-8 flex justify-center items-center">Prev</div>
-            {% endif %}
-            <form>
-              <input class="rounded-lg w-12 h-8 flex justify-center items-center text-center" type="text" name="page" value="{{page}}" placeholder="{{page}}">
-            </form>
-            {% if page <= pageMax%}
-            <a href="/{{task}}/{{num}}?page={{page+1}}" class="bg-red-400 rounded-lg w-12 h-8 flex justify-center items-center">Next</a>
-            {% else %}
-            <div class="bg-gray-500 cursor-not-allowed rounded-lg w-12 h-8 flex justify-center items-center">Next</div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      <div class="evalView h-screen w-4/5 bg-gray-500 flex flex-auto flex-col items-center justify-center">
-        <div class="contentView flex flex-col items-center justify-center">
-          <div class="num"><p class="n text-3xl text-white font-black">{{num}}/{{totalNum}}</p></div>
-          <div class="pictures">
-            <img class="pictures w-90 h-80" src= {{ data[(num-1)|string()]['path'] }}>
-          </div>
-          <div class="texts bg-white h-50 w-5/6 p-2 rounded-lg">
-            {% for key in data[(num-1)|string()].keys()%}
-            {% if key != 'path' %}
-            <span class="text-red-600 font-bold">{{key}}:</span>
-            <p class="text-black">{{data[(num-1)|string()][key]}}</p>
-            {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-        <form class="rateView flex flex-col justify-center items-center" method="post" action="/{{task}}/{{num}}/submit">
-          {% for item in criterion %}
-          {% for key in item.keys() %}
-          <div class="score flex flex-row">
-            <p class="flex justify-center items-center"> {{key}}: </p>
-            <div class="indexGrid grid grid-cols-4 gap-4 p-1">
-              {% for i in range(item[key]) %}
-              <label for="{{i}}">
-                {% if resDict[key] == i|string() %}
-                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required checked>
-                {% else %}
-                <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required>
-                {% endif %}
-                <div class="bg-blue-400 rounded-lg w-8 h-8 flex justify-center items-center cursor-pointer peer-checked:border-black peer-checked:text-yellow-300 hover:text-gray-600 hover:bg-gray-100">
-                  {{i}}
+        <div class="indexes w-16 flex flex-grow">
+            <div class="border border-opacity-10">
+                <div class="indexGrid grid grid-cols-3 gap-2 p-3">
+                    {% for i in range((page-1)*36,loopMax) %}
+                    <a href="/{{task}}/{{i+1}}?page={{page}}"
+                    class="py-3 px-3 m-1 text-base text-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{i+1}}</a>
+                    {% endfor %}
                 </div>
-              </label>
-              {% endfor %}
+                <hr>
+                <div class="indexGrid grid grid-cols-3 gap-2 p-3">
+                    {% if page > 1%}
+                    <a href="/{{task}}/{{num}}?page={{page-1}}"
+                    class="py-1 px-3 m-1 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Prev</a>
+                    {% else %}
+                    <div class="py-1 px-3 m-1 inline-flex cursor-not-allowed items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        Prev</div>
+                    {% endif %}
+                    <form>
+                        <input class="py-2 px-3 m-1 border border-gray-300 rounded-lg w-12 h-8 flex justify-center items-center text-center" type="text"
+                            name="page" value="{{page}}" placeholder="{{page}}">
+                    </form>
+                    {% if page <= pageMax%} 
+                    <a href="/{{task}}/{{num}}?page={{page+1}}"
+                    class="py-1 px-3 m-1 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    {% else %}
+                    <div
+                    class="py-1 px-3 m-1 inline-flex cursor-not-allowed items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        Next</div>
+                    {% endif %}
+                </div>
             </div>
-          </div>
-          {% endfor %}
-          {% endfor %}
-          {% if num == totalNum %}
-          <button class="bg-gray-400 px-4 rounded-lg h-8 cursor-not-allowed">Submit</button>
-          {% else %}
-          <input type="submit" value="Submit" class="bg-green-400 px-4 rounded-lg h-8 cursor-pointer flex justify-center items-center">
-          {% endif %}
-        </form>
-        <div class="choiceView">
-          <div class="indexGrid grid grid-cols-3 gap-4 p-4">
-            {% if num == 1 %}
-            <div class="bg-gray-400 cursor-not-allowed rounded-lg w-20 h-8 flex justify-center items-center">Prev</div>
-            {% else %}
-            <a href="/{{task}}/{{num-1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Prev</a>
-            {% endif %}
-            <form method="post" action="/{{task}}/jump">
-              <input class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center text-center type="text" name="num" value="{{num}}" placeholder="{{num}}">
-            </form>
-            {% if num == totalNum %}
-            <div class="bg-gray-400 cursor-not-allowed rounded-lg w-20 h-8 flex justify-center items-center">Next</div>
-            {% else %}
-            <a href="/{{task}}/{{num+1}}?page={{page}}" class="bg-red-400 rounded-lg w-20 h-8 flex justify-center items-center">Next</a>
-            {% endif %}
-          </div>
         </div>
-      </div>
+        <div class="evalView w-4/5 flex flex-auto flex-col items-center justify-center">
+            <div class="contentView flex flex-col items-center justify-center">
+                <div class="num">
+                    <p class="n text-3xl text-black dark:text-white font-black z-50">{{num}}/{{totalNum}}</p>
+                </div>
+                <div class="pictures -mb-10 -mt-10 -z-50 cursor-none">
+                    <img class="pictures" src={{ data[(num-1)|string()]['path'] }}>
+                </div>
+                <div class="mb-2 bg-gray-100 border border-gray-300 text-gray-900 text-base rounded-lg block w-fit p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400">
+                    {% for key in data[(num-1)|string()].keys()%}
+                    {% if key != 'path' %}
+                    <span class="text-red-600 font-bold">{{key}}:</span>
+                    <p class="text-black">{{data[(num-1)|string()][key]}}</p>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <form class="rateView flex flex-col justify-center items-center" method="post"
+                action="/{{task}}/{{num}}/submit">
+                {% for item in criterion %}
+                {% for key in item.keys() %}
+                <div class="score flex flex-row">
+                    <p class="flex justify-center items-center mr-3 text-gray-500 dark:text-gray-400"> {{key}}: </p>
+                    <div class="indexGrid grid grid-cols-4 gap-4 p-1">
+                        {% for i in range(item[key]) %}
+                        <label for="{{i}}">
+                            {% if resDict[key] == i|string() %}
+                            <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required checked>
+                            {% else %}
+                            <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required>
+                            {% endif %}
+                            <div class="inline-flex items-center justify-center text-center w-10 h-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                {{i}}
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                {% endfor %}
+                {% if num == totalNum %}
+                <button class="py-2 px-4 m-2 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Submit</button>
+                {% else %}
+                <input type="submit" value="Submit"
+                    class="py-2 px-4 m-2 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                {% endif %}
+            </form>
+            <div class="choiceView">
+                <div class="indexGrid grid grid-cols-3 gap-4 p-4">
+                    {% if num == 1 %}
+                    <div class="py-1 px-3 m-1 inline-flex cursor-not-allowed items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        Prev</div>
+                    {% else %}
+                    <a href="/{{task}}/{{num-1}}?page={{page}}"
+                        class="py-1 px-3 m-1 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Prev</a>
+                    {% endif %}
+                    <form method="post" action="/{{task}}/jump">
+                        <input class="py-1 m-1 w-20 inline-flex text-center items-center justify-center text-sm font-medium bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" type="text" name="num" value="{{num}}" placeholder="{{num}}">
+                    </form>
+                    {% if num == totalNum %}
+                    <div class="py-1 px-3 m-1 inline-flex cursor-not-allowed items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        Next</div>
+                    {% else %}
+                    <a href="/{{task}}/{{num+1}}?page={{page}}"
+                        class="py-1 px-3 m-1 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
+
 </html>

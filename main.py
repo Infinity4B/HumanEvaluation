@@ -70,7 +70,12 @@ def rating_n(task, num):
       return redirect(f'/{task}/1')
    elif int(num) > totalNum:
       return redirect(f'/{task}/{totalNum}')
-   return render_template('./taskSpecific.html',num=int(num),totalNum=totalNum,page=page,pageMax=pageMax,loopMax=loopMax,task=task,data=data,criterion=taskConfig['criterion'],resDict=resDict)
+   if page < 1:
+      return redirect(f'/{task}/{num}?page=1')
+   elif page > pageMax + 1:
+      return redirect(f'/{task}/{num}?page={pageMax+1}')
+   else:
+      return render_template('./taskSpecific.html',num=int(num),totalNum=totalNum,page=page,pageMax=pageMax,loopMax=loopMax,task=task,data=data,criterion=taskConfig['criterion'],resDict=resDict)
 
 if __name__ == '__main__':
    app.run(debug=True)
