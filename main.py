@@ -3,8 +3,7 @@ import yaml, json, os
 
 
 app = Flask(__name__, root_path=os.getcwd(),static_folder=os.path.join(os.getcwd(),'static'))
-with open('config.yml','r') as f:
-   globalConfig = yaml.load(f, yaml.FullLoader)
+
 
 def submitResult(task, num, resDict):
    with open(f'./results/{task}.json', 'r') as f:
@@ -22,6 +21,8 @@ def readResult(task,num):
 def getIndexState(task, page, totalNum):
    with open(f'./results/{task}.json', 'r') as f:
       results = json.load(f)
+   with open('config.yml','r') as f:
+      globalConfig = yaml.load(f, yaml.FullLoader)
    res = []
    per = globalConfig['settings']['indexPerPage']
    loopMax = totalNum if page*per > totalNum else page*per
@@ -44,6 +45,8 @@ def icon():
 
 @app.route('/')
 def mainpage():
+   with open('config.yml','r') as f:
+      globalConfig = yaml.load(f, yaml.FullLoader)
    tasks = globalConfig['tasks']
    return render_template('./index.html',tasks=tasks)
 
@@ -58,14 +61,18 @@ def createTask():
 @app.route('/<task>/<num>/submit',methods=['POST'])
 def submit(task,num):
    submitResult(task, num, request.form.to_dict())
+   with open('config.yml','r') as f:
+      globalConfig = yaml.load(f, yaml.FullLoader)
    totalNum = globalConfig['tasks'][task]['totalNum']
-   if int(num) > totalNum:
+   if int(num)+1 > totalNum:
       return redirect(f'/{task}/{totalNum}')
    else:
       return redirect(f'/{task}/{str(int(num)+1)}')
 
 @app.route('/<task>/jump',methods=['POST'])
 def direct(task):
+   with open('config.yml','r') as f:
+      globalConfig = yaml.load(f, yaml.FullLoader)
    taskConfig = globalConfig['tasks'][task]
    totalNum = taskConfig['totalNum']
    if request.method == 'POST':
@@ -81,6 +88,8 @@ def direct(task):
 
 @app.route('/<task>/<num>')
 def rating_n(task, num):
+   with open('config.yml','r') as f:
+      globalConfig = yaml.load(f, yaml.FullLoader)
    taskConfig = globalConfig['tasks'][task]
    totalNum = taskConfig['totalNum']
    pageMax = totalNum // globalConfig['settings']['indexPerPage']

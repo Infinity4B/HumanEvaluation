@@ -14,7 +14,7 @@
         <div class="ml-12 flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" class="flex items-center">
             <img src="{{ url_for('static', filename='icon.svg') }}"" class="h-8 mr-3" alt="Logo">
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">HumanEval</span>
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">HumanEval</span>
         </a>
         </div>
     </nav>
@@ -25,7 +25,7 @@
                     {% for i in range((page-1)*per,loopMax) %}
                     {% if indexState[i - (page-1)*per] == 1 %}
                     <a href="/{{task}}/{{i+1}}?page={{page}}"
-                    class="py-3 px-3 m-1 flex text-base text-center justify-center items-center font-medium text-gray-900 focus:outline-none bg-green-400 rounded-lg border border-gray-200 hover:bg-green-300 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{i+1}}</a>
+                    class="py-3 px-3 m-1 flex text-base text-center justify-center items-center font-medium text-gray-900 focus:outline-none bg-green-400/75 rounded-lg border border-gray-200 hover:bg-green-300 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{i+1}}</a>
                     {% else %}
                     <a href="/{{task}}/{{i+1}}?page={{page}}"
                     class="py-3 px-3 m-1 flex text-base text-center justify-center items-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{i+1}}</a>
@@ -78,32 +78,28 @@
             <form class="rateView h-auto flex flex-col justify-center items-center" method="post"
                 action="/{{task}}/{{num}}/submit">
                 {% for item in criterion %}
-                {% for key in item.keys() %}
-                <div class="score grid grid-cols-2">
-                    <p class="flex justify-self-end items-center mr-3 text-gray-500 dark:text-gray-400"> {{key}}: </p>
-                    <div class="indexGrid grid grid-cols-4 gap-4 p-1">
-                        {% for i in range(item[key]) %}
-                        <label for="{{i}}">
-                            {% if resDict[key] == i|string() %}
-                            <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required checked>
-                            {% else %}
-                            <input type="radio" name="{{key}}" id="{{i}}" value="{{i}}" class="peer hidden" required>
-                            {% endif %}
-                            <div class="inline-flex items-center justify-center text-center w-10 h-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
-                                {{i}}
-                            </div>
-                        </label>
-                        {% endfor %}
+                    {% for key in item.keys() %}
+                    <div class="score grid grid-cols-2">
+                        <p class="flex justify-self-end items-center mr-3 text-gray-500 dark:text-gray-400"> {{key}}: </p>
+                        <div class="indexGrid grid grid-cols-10 gap-4 p-1">
+                            {% for i in range(item[key]) %}
+                            <label for="{{key+i|string()}}">
+                                {% if resDict[key] == i|string() %}
+                                <input type="radio" name="{{key}}" id="{{key+i|string()}}" value="{{i}}" class="{{key+i|string()}} peer hidden" required checked>
+                                {% else %}
+                                <input type="radio" name="{{key}}" id="{{key+i|string()}}" value="{{i}}" class="{{key+i|string()}} peer hidden" required>
+                                {% endif %}
+                                <div class="{{key+i|string()}} inline-flex items-center justify-center text-center w-10 h-10 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                    {{i}}
+                                </div>
+                            </label>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
+                    {% endfor %}
                 {% endfor %}
-                {% endfor %}
-                {% if num == totalNum %}
-                <button class="py-2 px-4 m-2 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Submit</button>
-                {% else %}
                 <input type="submit" value="Submit"
                     class="py-2 px-4 m-2 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                {% endif %}
             </form>
             <div class="choiceView h-auto">
                 <div class="indexGrid grid grid-cols-3 gap-4 p-4">
