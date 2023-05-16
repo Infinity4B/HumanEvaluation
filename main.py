@@ -1,5 +1,10 @@
-from flask import Flask, redirect, url_for, request, render_template, send_from_directory
+from flask import Flask, redirect, url_for, request, render_template, send_from_directory, flash
 import yaml, json, os
+
+
+app = Flask(__name__, root_path=os.getcwd(),static_folder=os.path.join(os.getcwd(),'static'))
+with open('config.yml','r') as f:
+   globalConfig = yaml.load(f, yaml.FullLoader)
 
 def submitResult(task, num, resDict):
    with open(f'./results/{task}.json', 'r') as f:
@@ -14,9 +19,24 @@ def readResult(task,num):
       results = json.load(f)
    return results[str(int(num) - 1)]
 
-app = Flask(__name__, root_path=os.getcwd(),static_folder=os.path.join(os.getcwd(),'static'))
-with open('config.yml','r') as f:
-   globalConfig = yaml.load(f, yaml.FullLoader)
+def getIndexState(task, page, totalNum):
+   with open(f'./results/{task}.json', 'r') as f:
+      results = json.load(f)
+   res = []
+   per = globalConfig['settings']['indexPerPage']
+   loopMax = totalNum if page*per > totalNum else page*per
+   for i in range((page-1)*per, loopMax):
+      if checkFilled(results[str(i)]):
+         res.append(1)
+      else:
+         res.append(0)
+   return res
+
+def checkFilled(res:dict):
+   for key in res.keys():
+      if res[key] == -1:
+         return False
+   return True
 
 @app.route('/favicon.ico')
 def icon():
@@ -30,6 +50,10 @@ def mainpage():
 @app.route('/<task>/')
 def rating(task):
    return redirect(f'/{task}/1')
+
+@app.route('/createTask')
+def createTask():
+   return render_template('./createTask.html')
 
 @app.route('/<task>/<num>/submit',methods=['POST'])
 def submit(task,num):
@@ -60,11 +84,14 @@ def rating_n(task, num):
    taskConfig = globalConfig['tasks'][task]
    totalNum = taskConfig['totalNum']
    pageMax = totalNum // globalConfig['settings']['indexPerPage']
+   per = globalConfig['settings']['indexPerPage']
    page = int(request.args.get('page', 1))
-   loopMax = totalNum if page*36 > totalNum else page*36
+   loopMax = totalNum if page*per > totalNum else page*per
    with open(os.path.join(os.getcwd(),taskConfig['datasetPath']),'r') as f:
       data = json.load(f)
    resDict = readResult(task, num)
+   indexState = getIndexState(task,page,totalNum)
+   usePicture = taskConfig['usePicture']
 
    if int(num) < 1:
       return redirect(f'/{task}/1')
@@ -75,7 +102,7 @@ def rating_n(task, num):
    elif page > pageMax + 1:
       return redirect(f'/{task}/{num}?page={pageMax+1}')
    else:
-      return render_template('./taskSpecific.html',num=int(num),totalNum=totalNum,page=page,pageMax=pageMax,loopMax=loopMax,task=task,data=data,criterion=taskConfig['criterion'],resDict=resDict)
+      return render_template('./taskSpecific.html',num=int(num),totalNum=totalNum,page=page,pageMax=pageMax,loopMax=loopMax,task=task,data=data,criterion=taskConfig['criterion'],resDict=resDict,per=per,indexState=indexState, usePicture=usePicture)
 
 if __name__ == '__main__':
    app.run(debug=True)

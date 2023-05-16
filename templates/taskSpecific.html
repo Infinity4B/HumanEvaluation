@@ -7,7 +7,6 @@
     <title> {{task}} </title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='icon.svg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -20,12 +19,17 @@
         </div>
     </nav>
     <div class="mainContents flex flex-row flex-auto">
-        <div class="indexes w-16 flex flex-grow">
+        <div class="indexes w-1/5 flex flex-grow">
             <div class="border border-opacity-10">
                 <div class="indexGrid grid grid-cols-3 gap-2 p-3">
-                    {% for i in range((page-1)*36,loopMax) %}
+                    {% for i in range((page-1)*per,loopMax) %}
+                    {% if indexState[i - (page-1)*per] == 1 %}
                     <a href="/{{task}}/{{i+1}}?page={{page}}"
-                    class="py-3 px-3 m-1 text-base text-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{i+1}}</a>
+                    class="py-3 px-3 m-1 flex text-base text-center justify-center items-center font-medium text-gray-900 focus:outline-none bg-green-400 rounded-lg border border-gray-200 hover:bg-green-300 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{i+1}}</a>
+                    {% else %}
+                    <a href="/{{task}}/{{i+1}}?page={{page}}"
+                    class="py-3 px-3 m-1 flex text-base text-center justify-center items-center font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{i+1}}</a>
+                    {% endif %}
                     {% endfor %}
                 </div>
                 <hr>
@@ -52,14 +56,16 @@
                 </div>
             </div>
         </div>
-        <div class="evalView w-4/5 flex flex-auto flex-col items-center justify-center">
-            <div class="contentView flex flex-col items-center justify-center">
-                <div class="num">
+        <div class="evalView w-4/5 h-screen flex flex-auto flex-col items-center mt-10">
+            <div class="contentView h-auto flex flex-col items-center justify-center">
+                <div class="num my-2">
                     <p class="n text-3xl text-black dark:text-white font-black z-50">{{num}}/{{totalNum}}</p>
                 </div>
-                <div class="pictures -mb-10 -mt-10 -z-50 cursor-none">
-                    <img class="pictures" src={{ data[(num-1)|string()]['path'] }}>
+                {% if usePicture %}
+                <div class="pictures -z-50 my-2 h-80 cursor-none">
+                    <img class="pictures w-full h-full" src={{ data[(num-1)|string()]['path'] }}>
                 </div>
+                {% endif %}
                 <div class="mb-2 bg-gray-100 border border-gray-300 text-gray-900 text-base rounded-lg block w-fit p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400">
                     {% for key in data[(num-1)|string()].keys()%}
                     {% if key != 'path' %}
@@ -69,12 +75,12 @@
                     {% endfor %}
                 </div>
             </div>
-            <form class="rateView flex flex-col justify-center items-center" method="post"
+            <form class="rateView h-auto flex flex-col justify-center items-center" method="post"
                 action="/{{task}}/{{num}}/submit">
                 {% for item in criterion %}
                 {% for key in item.keys() %}
-                <div class="score flex flex-row">
-                    <p class="flex justify-center items-center mr-3 text-gray-500 dark:text-gray-400"> {{key}}: </p>
+                <div class="score grid grid-cols-2">
+                    <p class="flex justify-self-end items-center mr-3 text-gray-500 dark:text-gray-400"> {{key}}: </p>
                     <div class="indexGrid grid grid-cols-4 gap-4 p-1">
                         {% for i in range(item[key]) %}
                         <label for="{{i}}">
@@ -99,7 +105,7 @@
                     class="py-2 px-4 m-2 inline-flex items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                 {% endif %}
             </form>
-            <div class="choiceView">
+            <div class="choiceView h-auto">
                 <div class="indexGrid grid grid-cols-3 gap-4 p-4">
                     {% if num == 1 %}
                     <div class="py-1 px-3 m-1 inline-flex cursor-not-allowed items-center justify-center text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -122,7 +128,6 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
 
 </html>

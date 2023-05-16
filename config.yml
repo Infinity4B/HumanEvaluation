@@ -2,34 +2,19 @@ settings:
   indexPerPage: 36
 
 tasks:
-  # - example1:
-  #   usePictrue: True
-  #   totalNum: 200
-  #   criterion:
-  #     - Justification: 4 # num 4 means [0,1,2,3]
-
-  # - example2:
-  #   usePictrue: False
-  #   totalNum: 800
-  #   criterion:
-  #     - Coherence: 4
-  #     - Informativeness: 4
-  #     - Fluency: 4
-  #     - Overall: 4
-
-  VCR:
-    author: 'Yuan Fan'
-    usePictrue: True
-    totalNum: 200
-    datasetPath: 'static/resources/VCRref.json'
+  taskWithPicture:
+    author: 'Anonymous'
+    usePicture: True
+    totalNum: 5
+    datasetPath: 'static/resources/taskWithPictureRef.json'
     criterion:
       - Justification: 4 # num 4 means [0,1,2,3]
   
-  QA:
-    author: 'Ni Xuanfan'
-    usePictrue: False
-    totalNum: 800
-    datasetPath: 'static/resources/QAref.json'
+  taskWithoutPicture:
+    author: 'Anonymous'
+    usePicture: False
+    totalNum: 5
+    datasetPath: 'static/resources/taskWithoutPictureRef.json'
     criterion:
       - Coherence: 4
       - Informativeness: 4

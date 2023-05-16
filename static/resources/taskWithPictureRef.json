@@ -1,0 +1,32 @@
+{
+    "0": {
+        "path": "/static/images/taskWithPicture/1.jpg",
+        "Question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Label": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Predition": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    },
+    "1": {
+        "path": "/static/images/taskWithPicture/2.jpg",
+        "Question": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "Label": "Donec sed quam in ex lacinia auctor ut ut metus. Fusce ultricies iaculis dignissim.",
+        "Predition": "In lectus enim, consequat et risus sed, mollis condimentum turpis."
+    },
+    "2": {
+        "path": "/static/images/taskWithPicture/3.jpg",
+        "Question": "Morbi sed volutpat urna. Phasellus vehicula, elit sed condimentum interdum, massa eros pulvinar risus, id sagittis lorem sem vitae nunc.",
+        "Label": "Interdum et malesuada fames ac ante ipsum primis in faucibus.",
+        "Predition": "Sed vestibulum laoreet eros, finibus fringilla ex rutrum eget."
+    },
+    "3": {
+        "path": "/static/images/taskWithPicture/4.jpg",
+        "Question": "Ut erat odio, sagittis id euismod et, consectetur et mauris.",
+        "Label": "Donec aliquet lacus sapien, in ullamcorper nisi placerat eu. Maecenas nulla massa, hendrerit vitae vestibulum non, interdum eget felis. Praesent volutpat elit eu erat malesuada tempor.",
+        "Predition": "Duis tempor vehicula laoreet."
+    },
+    "4": {
+        "path": "/static/images/taskWithPicture/5.jpg",
+        "Question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Label": "In rhoncus vel leo at tristique. Quisque fermentum posuere leo, nec gravida metus maximus eu. Sed sit amet facilisis augue.",
+        "Predition": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
+    }
+}
